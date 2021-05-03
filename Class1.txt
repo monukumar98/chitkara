@@ -1,0 +1,195 @@
+mysql -u root -p
+Enter password?.....
+show databases;
++--------------------+
+| Database           |
++--------------------+
+| Emp                |
+| information_schema |
+| mysql              |
+| performance_schema |
+| Student            |
+| sys                |
++--------------------+
+6 rows in set (0.02 sec)
+
+ mysql> show tables;
++-------------------+
+| Tables_in_student |
++-------------------+
+| Student_info      |
++-------------------+
+1 row in set (0.00 sec)
+
+
+mysql> drop database student;
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| Emp                |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+mysql> Create database Student;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| Emp                |
+| information_schema |
+| mysql              |
+| performance_schema |
+| Student            |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> use student;
+
+mysql> Create Table Student_info(First_Name varchar(30),Last_Name varchar(30),Roll_Number int,Marks int); 
+
+
+mysql> show tables;
++-------------------+
+| Tables_in_student |
++-------------------+
+| Student_info      |
++-------------------+
+1 row in set (0.00 sec)
+
+
+Insert into  Student_info(First_Name,Last_name,Roll_number,Marks)values("priya","Singh",12,89);
+Query OK, 1 row affected (0.00 sec)
+
+
+mysql> Select  * from Student_info;
++------------+-----------+-------------+-------+
+| First_Name | Last_Name | Roll_Number | Marks |
++------------+-----------+-------------+-------+
+| priya      | Singh     |          12 |    89 |
+| Raju       | Yado      |          15 |    78 |
+| Raj        | kumar     |          18 |    68 |
+| Shivam     | singh     |          20 |    78 |
+| Shivani    | singh     |          22 |    79 |
+| Rahul      | kumar     |          23 |    89 |
+| Hitman     | Sharma    |          25 |    76 |
++------------+-----------+-------------+-------+
+7 rows in set (0.00 sec)
+
+
+
+ Select  First_Name from Student_info;
++------------+
+| First_Name |
++------------+
+| priya      |
+| Raju       |
+| Raj        |
+| Shivam     |
+| Shivani    |
+| Rahul      |
+| Hitman     |
++------------+
+7 rows in set (0.00 sec)
+
+Select  First_Name,Roll_number from Student_info;
++------------+-------------+
+| First_Name | Roll_number |
++------------+-------------+
+| priya      |          12 |
+| Raju       |          15 |
+| Raj        |          18 |
+| Shivam     |          20 |
+| Shivani    |          22 |
+| Rahul      |          23 |
+| Hitman     |          25 |
++------------+-------------+
+7 rows in set (0.00 sec)
+
+// Alter Command
+Add Colomn
+
+Alter Table Student_info add (phone varchar(15),Gen varchar(10));
+
+
+// Drop Colomn
+Alter Table TAble_Name Drop  Col_Name
+
+mysql> Alter Table Student_Info modify Roll_Number varchar(30);
+Query OK, 6 rows affected (0.05 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> desc Student;
+ERROR 1146 (42S02): Table 'student.student' doesn't exist
+mysql> desc Student_info;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| First_Name  | varchar(30)  | YES  |     | NULL    |       |
+| Last_Name   | varchar(30)  | YES  |     | NULL    |       |
+| Roll_Number | varchar(30)  | YES  |     | NULL    |       |
+| Marks       | int          | YES  |     | NULL    |       |
+| Address     | varchar(255) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+
+// Rename Column
+mysql> Alter Table Student_Info rename column  marks to mark;
+
+mysql> Select  * from Student_info;
++------------+-----------+-------------+------+---------+
+| First_Name | Last_Name | Roll_Number | mark | Address |
++------------+-----------+-------------+------+---------+
+| Raju       | Yado      |          15 |   78 | NULL    |
+| Raj        | kumar     |          18 |   68 | NULL    |
+| Shivam     | singh     |          20 |   78 | NULL    |
+| Shivani    | singh     |          22 |   79 | NULL    |
+| Rahul      | kumar     |          23 |   89 | NULL    |
+| Hitman     | Sharma    |          25 |   76 | NULL    |
++------------+-----------+-------------+------+---------+
+6 rows in set (0.00 sec)
+
+// Rename Table
+ Alter Table old_name  rename New_Name;
+// Add Primary Key 
+mysql> Alter table Student_info Add Primary key(Roll_number);
+
+// Delete particular row 
+mysql> Delete from Student_info where Roll_number=12;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Select  * from Student_info;
++------------+-----------+-------------+-------+---------+
+| First_Name | Last_Name | Roll_Number | Marks | Address |
++------------+-----------+-------------+-------+---------+
+| Raju       | Yado      |          15 |    78 | NULL    |
+| Raj        | kumar     |          18 |    68 | NULL    |
+| Shivam     | singh     |          20 |    78 | NULL    |
+| Shivani    | singh     |          22 |    79 | NULL    |
+| Rahul      | kumar     |          23 |    89 | NULL    |
+| Hitman     | Sharma    |          25 |    76 | NULL    |
++------------+-----------+-------------+-------+---------+
+6 rows in set (0.00 sec)
+
+// Upadte row value
+mysql> update Student_info set Address="Pan" where roll_number=25;
+Query OK, 1 row affected (0.01 sec)
+mysql> Select  * from Student_info;
++------------+-----------+-------------+------+---------+
+| First_Name | Last_Name | Roll_Number | mark | Address |
++------------+-----------+-------------+------+---------+
+| Raju       | Yado      |          15 |   78 | Delhi   |
+| Raj        | kumar     |          18 |   68 | Pune    |
+| Shivam     | singh     |          20 |   78 | Pan     |
+| Shivani    | singh     |          22 |   79 | Bang    |
+| Rahul      | kumar     |          23 |   89 | Delhi   |
+| Hitman     | Sharma    |          25 |   76 | Pan     |
++------------+-----------+-------------+------+---------+
+6 rows in set (0.00 sec)
