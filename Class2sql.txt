@@ -1,0 +1,586 @@
+
+mysql> select * from employee;
++------+-------+-------+--------+----------+
+| E_Id | Ename | Dept  | Salary | Address  |
++------+-------+-------+--------+----------+
+|    1 | Mohan | HR    |   3500 | Punjab   |
+|    2 | Rohan | MARKT |    350 | Delhi    |
+|    3 | Ravi  | HR    |   3500 | Pune     |
+|    4 | Nitin | MARKT |    350 | Banglore |
+|    5 | varun | IT    |    500 | Delhi    |
+|    6 | Rahul | IT    |    500 | Punjab   |
++------+-------+-------+--------+----------+
+6 rows in set (0.01 sec)
+
+mysql> select * from project;
++------+------+--------------+----------+
+| E_Id | P_ID | Project_Name | location |
++------+------+--------------+----------+
+|    1 | p1   | IOT          | Banglore |
+|    5 | p2   | Big Data     | Delhi    |
+|    3 | p3   | Retail       | Mumbai   |
+|    4 | p4   | Android      | Mumbai   |
++------+------+--------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Details;
++------+-----------------+--------------+
+| E_Id | Email_Id        | phone_number |
++------+-----------------+--------------+
+|    1 | mohan@gamil.com | 9992818245   |
+|    2 | rohan@gamil.com | 9992818235   |
+|    3 | ravi@gamil.com  | 9942818245   |
+|    4 | nitin@gamil.com | 9942858245   |
+|    5 | varun@gamil.com | 7942858245   |
+|    6 | Rahul@gamil.com | 9892858245   |
++------+-----------------+--------------+
+6 rows in set (0.00 sec)
+
+mysql>  
+
+
+
+//  Aggregate Function
+
+
+mysql>  select max(salary) from Employee;
++-------------+
+| max(salary) |
++-------------+
+|        3500 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql>  select min(salary) from Employee;
++-------------+
+| min(salary) |
++-------------+
+|         350 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql>  select avg(salary) from Employee;
++-------------+
+| avg(salary) |
++-------------+
+|   1450.0000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql>  select sum(salary) from Employee;
++-------------+
+| sum(salary) |
++-------------+
+|        8700 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql>  select Count(*) from Employee;
++----------+
+| Count(*) |
++----------+
+|        6 |
++----------+
+ select Count(Distinct(salary)) from Employee;
++-------------------------+
+| Count(Distinct(salary)) |
++-------------------------+
+|                       3 |
++-------------------------+
+
+The SQL WHERE Clause
+The WHERE clause is used to filter records.
+
+It is used to extract only those records that fulfill a specified condition.
+WHERE Clause is used to filter the records from the table based on the specified condition.
+Q write Sql Quarry , print Name Whose Max Salary
+mysql>  select ename from Employee where salary = (Select max(salary) from employee);
+
+
+Q Second Higest Salary
+
+mysql>  select Salary  from Employee where salary != (Select max(salary) from employee);
++--------+
+| Salary |
++--------+
+|    350 |
+|    350 |
+|    500 |
+|    500 |
++--------+
+4 rows in set (0.01 sec)
+
+mysql>  select max(Salary)  from Employee where salary != (Select max(salary) from employee);
++-------------+
+| max(Salary) |
++-------------+
+|         500 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> 
+Q write Sql Quarry , print Name Whose  Second higest Salary  
+
+ Select Ename from Employee where salary =(select max(Salary)  from Employee where salary != (Select
+max(salary) from employee));
++-------+
+| Ename |
++-------+
+| varun |
+| Rahul |
++-------+
+2 rows in set (0.00 sec)
+
+mysql>  Select * from Employee where salary =(select max(Salary)  from Employee where salary != (Select max(salary) from employee));
++------+-------+------+--------+---------+
+| E_Id | Ename | Dept | Salary | Address |
++------+-------+------+--------+---------+
+|    5 | varun | IT   |    500 | Delhi   |
+|    6 | Rahul | IT   |    500 | Punjab  |
++------+-------+------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> 
+
+
+Find Nth Higest Salary 
+
+mysql> Select * from Employee e1 where n-1 =(Select Count(Salary) from Employee e2 where (e2.salary>e1.salary));
+
+Q write a Quarry to display all the department name along with no of employee Working in that ??
+
+mysql> Select * from Employee where Dept="HR";
++------+-------+------+--------+---------+
+| E_Id | Ename | Dept | Salary | Address |
++------+-------+------+--------+---------+
+|    1 | Mohan | HR   |   3500 | Punjab  |
+|    3 | Ravi  | HR   |   3500 | Pune    |
++------+-------+------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> Select * from Employee where Dept="IT";
++------+-------+------+--------+---------+
+| E_Id | Ename | Dept | Salary | Address |
++------+-------+------+--------+---------+
+|    5 | varun | IT   |    500 | Delhi   |
+|    6 | Rahul | IT   |    500 | Punjab  |
++------+-------+------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> Select Count(*) from Employee where Dept="IT";
++----------+
+| Count(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> Select Count(*) from Employee where Dept="HR";
++----------+
+| Count(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> Select Count(*) from Employee where Dept="MARKT";
++----------+
+| Count(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> 
+Select dept,sum(salary)   from Employee Group by dept;
++-------+-------------+
+| dept  | sum(salary) |
++-------+-------------+
+| HR    |        7000 |
+| MARKT |         700 |
+| IT    |        1000 |
++-------+-------------+
+3 rows in set (0.00 sec)
+
+ write a Quarry to display all the department name where no of employee are less then 2??
+ Select dept  from Employee Group by dept having count(*)<=2;
++-------+
+| dept  |
++-------+
+| HR    |
+| MARKT |
+| IT    |
++-------+
+3 rows in set (0.01 sec)
+
+
+Display Name with Max Salary dept wise 
+
+mysql> Select Ename from Employee where salary in (Select max(Salary) from employee group by Dept);
++-------+
+| Ename |
++-------+
+| Rohan |
+| Ravi  |
+| Rahul |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> Select * from Employee where salary in (Select max(Salary) from employee group by Dept);
++------+-------+-------+--------+---------+
+| E_Id | Ename | Dept  | Salary | Address |
++------+-------+-------+--------+---------+
+|    2 | Rohan | MARKT |    600 | Delhi   |
+|    3 | Ravi  | HR    |   3500 | Pune    |
+|    6 | Rahul | IT    |    500 | Punjab  |
++------+-------+-------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> 
+Select * from Employee where salary not in (Select max(Salary) from employee group by Dept);
++------+-------+-------+--------+----------+
+| E_Id | Ename | Dept  | Salary | Address  |
++------+-------+-------+--------+----------+
+|    1 | Mohan | HR    |   2500 | Punjab   |
+|    4 | Nitin | MARKT |    350 | Banglore |
+|    5 | varun | IT    |    400 | Delhi    |
++------+-------+-------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> 
+
+
+Q find the name of Employee who are working on project 
+mysql> Select * from Employee where E_Id in (Select E_id from Project);
++------+-------+-------+--------+----------+
+| E_Id | Ename | Dept  | Salary | Address  |
++------+-------+-------+--------+----------+
+|    1 | Mohan | HR    |   2500 | Punjab   |
+|    3 | Ravi  | HR    |   3500 | Pune     |
+|    4 | Nitin | MARKT |    350 | Banglore |
+|    5 | varun | IT    |    400 | Delhi    |
++------+-------+-------+--------+----------+
+4 rows in set (0.00 sec)
+
+
+Select * from Employee where E_Id not in (Select E_id from Project);
++------+-------+-------+--------+---------+
+| E_Id | Ename | Dept  | Salary | Address |
++------+-------+-------+--------+---------+
+|    2 | Rohan | MARKT |    600 | Delhi   |
+|    6 | Rahul | IT    |    500 | Punjab  |
++------+-------+-------+--------+---------+
+
+Q Detels of employee whose Address is either Delhi Pujab or mumbai
+Select * from Employee where Address in ("Delhi","punjab","munbai");
++------+-------+-------+--------+---------+
+| E_Id | Ename | Dept  | Salary | Address |
++------+-------+-------+--------+---------+
+|    1 | Mohan | HR    |   2500 | Punjab  |
+|    2 | Rohan | MARKT |    600 | Delhi   |
+|    5 | varun | IT    |    400 | Delhi   |
+|    6 | Rahul | IT    |    500 | Punjab  |
++------+-------+-------+--------+---------+
+4 rows in set (0.00 sec)
+Q  Detels of employee whose Address is not  either Delhi Pujab or pune
+Select * from Employee where Address not in ("Delhi","punjab","pune");
++------+-------+-------+--------+----------+
+| E_Id | Ename | Dept  | Salary | Address  |
++------+-------+-------+--------+----------+
+|    4 | Nitin | MARKT |    350 | Banglore |
++------+-------+-------+--------+----------+
+
+//  Exists Not Exists 
+
+Q find the details of emplooye who is working on atleast on project 
+mysql> select * from Employee  where exists (Select E_id from project where (Employee.E_iD=Project.E_id));
++------+-------+-------+--------+----------+
+| E_Id | Ename | Dept  | Salary | Address  |
++------+-------+-------+--------+----------+
+|    1 | Mohan | HR    |   2500 | Punjab   |
+|    3 | Ravi  | HR    |   3500 | Pune     |
+|    4 | Nitin | MARKT |    350 | Banglore |
+|    5 | varun | IT    |    400 | Delhi    |
++------+-------+-------+--------+----------+
+4 rows in set (0.00 sec)
+
+
+mysql> select * from Employee  where not exists (Select E_id from project where (Employee.E_iD=Project.E_id));
++------+-------+-------+--------+---------+
+| E_Id | Ename | Dept  | Salary | Address |
++------+-------+-------+--------+---------+
+|    2 | Rohan | MARKT |    600 | Delhi   |
+|    6 | Rahul | IT    |    500 | Punjab  |
++------+-------+-------+--------+---------+
+2 rows in set (0.00 sec)
+
+
+//JOins. Natural 
+
+
+mysql> select E_Id,Ename,project_name   from Employee,project;
+ERROR 1052 (23000): Column 'E_Id' in field list is ambiguous
+mysql> select * from Employee,project;
++------+-------+-------+--------+----------+------+------+--------------+----------+
+| E_Id | Ename | Dept  | Salary | Address  | E_Id | P_ID | Project_Name | location |
++------+-------+-------+--------+----------+------+------+--------------+----------+
+|    1 | Mohan | HR    |   2500 | Punjab   |    1 | p1   | IOT          | Banglore |
+|    1 | Mohan | HR    |   2500 | Punjab   |    5 | p2   | Big Data     | Delhi    |
+|    1 | Mohan | HR    |   2500 | Punjab   |    3 | p3   | Retail       | Mumbai   |
+|    1 | Mohan | HR    |   2500 | Punjab   |    4 | p4   | Android      | Mumbai   |
+|    2 | Rohan | MARKT |    600 | Delhi    |    1 | p1   | IOT          | Banglore |
+|    2 | Rohan | MARKT |    600 | Delhi    |    5 | p2   | Big Data     | Delhi    |
+|    2 | Rohan | MARKT |    600 | Delhi    |    3 | p3   | Retail       | Mumbai   |
+|    2 | Rohan | MARKT |    600 | Delhi    |    4 | p4   | Android      | Mumbai   |
+|    3 | Ravi  | HR    |   3500 | Pune     |    1 | p1   | IOT          | Banglore |
+|    3 | Ravi  | HR    |   3500 | Pune     |    5 | p2   | Big Data     | Delhi    |
+|    3 | Ravi  | HR    |   3500 | Pune     |    3 | p3   | Retail       | Mumbai   |
+|    3 | Ravi  | HR    |   3500 | Pune     |    4 | p4   | Android      | Mumbai   |
+|    4 | Nitin | MARKT |    350 | Banglore |    1 | p1   | IOT          | Banglore |
+|    4 | Nitin | MARKT |    350 | Banglore |    5 | p2   | Big Data     | Delhi    |
+|    4 | Nitin | MARKT |    350 | Banglore |    3 | p3   | Retail       | Mumbai   |
+|    4 | Nitin | MARKT |    350 | Banglore |    4 | p4   | Android      | Mumbai   |
+|    5 | varun | IT    |    400 | Delhi    |    1 | p1   | IOT          | Banglore |
+|    5 | varun | IT    |    400 | Delhi    |    5 | p2   | Big Data     | Delhi    |
+|    5 | varun | IT    |    400 | Delhi    |    3 | p3   | Retail       | Mumbai   |
+|    5 | varun | IT    |    400 | Delhi    |    4 | p4   | Android      | Mumbai   |
+|    6 | Rahul | IT    |    500 | Punjab   |    1 | p1   | IOT          | Banglore |
+|    6 | Rahul | IT    |    500 | Punjab   |    5 | p2   | Big Data     | Delhi    |
+|    6 | Rahul | IT    |    500 | Punjab   |    3 | p3   | Retail       | Mumbai   |
+|    6 | Rahul | IT    |    500 | Punjab   |    4 | p4   | Android      | Mumbai   |
++------+-------+-------+--------+----------+------+------+--------------+----------+
+24 rows in set (0.00 sec)
+
+mysql> select * from Employee,project where Employee.E_Id=project.E_id;
++------+-------+-------+--------+----------+------+------+--------------+----------+
+| E_Id | Ename | Dept  | Salary | Address  | E_Id | P_ID | Project_Name | location |
++------+-------+-------+--------+----------+------+------+--------------+----------+
+|    1 | Mohan | HR    |   2500 | Punjab   |    1 | p1   | IOT          | Banglore |
+|    3 | Ravi  | HR    |   3500 | Pune     |    3 | p3   | Retail       | Mumbai   |
+|    4 | Nitin | MARKT |    350 | Banglore |    4 | p4   | Android      | Mumbai   |
+|    5 | varun | IT    |    400 | Delhi    |    5 | p2   | Big Data     | Delhi    |
++------+-------+-------+--------+----------+------+------+--------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Employee natural join project;
++------+-------+-------+--------+----------+------+--------------+----------+
+| E_Id | Ename | Dept  | Salary | Address  | P_ID | Project_Name | location |
++------+-------+-------+--------+----------+------+--------------+----------+
+|    1 | Mohan | HR    |   2500 | Punjab   | p1   | IOT          | Banglore |
+|    3 | Ravi  | HR    |   3500 | Pune     | p3   | Retail       | Mumbai   |
+|    4 | Nitin | MARKT |    350 | Banglore | p4   | Android      | Mumbai   |
+|    5 | varun | IT    |    400 | Delhi    | p2   | Big Data     | Delhi    |
++------+-------+-------+--------+----------+------+--------------+----------+
+4 rows in set (0.00 sec)
+
+
+
+4 rows in set (0.00 sec)
+
++------+------+--------------+----------+-----------------+--------------+
+| E_Id | P_ID | Project_Name | location | Email_Id        | phone_number |
++------+------+--------------+----------+-----------------+--------------+
+|    1 | p1   | IOT          | Banglore | mohan@gamil.com | 9992818245   |
+|    3 | p3   | Retail       | Mumbai   | ravi@gamil.com  | 9942818245   |
+|    4 | p4   | Android      | Mumbai   | nitin@gamil.com | 9942858245   |
+|    5 | p2   | Big Data     | Delhi    | varun@gamil.com | 7942858245   |
++------+------+--------------+----------+-----------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> 
+
+Self Join 
+select s1.First_name, s1.last_name,s1.Roll_number,s1.mark,s1.address  from Student_info as s1,Student_info as
+ s2 where s1.Roll_number!=s2.Roll_number and s1.mark=s2.mark;
++------------+-----------+-------------+------+---------+
+| First_name | last_name | Roll_number | mark | address |
++------------+-----------+-------------+------+---------+
+| Shivam     | singh     |          20 |   78 | Pan     |
+| Raju       | Yado      |          15 |   78 | Delhi   |
++------------+-----------+-------------+------+---------+
+
+
+// Equ Join 
+
+
+
+Find the Emp name who Worked in Department having loction same as their Address 
+
+mysql> select *  from Employee,project where Employee.E_id=project.E_id and Employee.Address=project.location;
++------+-------+------+--------+---------+------+------+--------------+----------+
+| E_Id | Ename | Dept | Salary | Address | E_Id | P_ID | Project_Name | location |
++------+-------+------+--------+---------+------+------+--------------+----------+
+|    5 | varun | IT   |    400 | Delhi   |    5 | p2   | Big Data     | Delhi    |
++------+-------+------+--------+---------+------+------+--------------+----------+
+1 row in set (0.00 sec)
+
+mysql> 
+// left outer join 
+
+ Select Ename,Dept,Project.Location from Employee left outer join  project on ( Employee.E_ID=Project.E_ID);
++-------+-------+----------+
+| Ename | Dept  | Location |
++-------+-------+----------+
+| Mohan | HR    | Banglore |
+| Rohan | MARKT | NULL     |
+| Ravi  | HR    | Mumbai   |
+| Nitin | MARKT | Mumbai   |
+| varun | IT    | Delhi    |
+| Rahul | IT    | NULL     |
++-------+-------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from project;
++------+------+--------------+----------+
+| E_Id | P_ID | Project_Name | location |
++------+------+--------------+----------+
+|    1 | p1   | IOT          | Banglore |
+|    5 | p2   | Big Data     | Delhi    |
+|    3 | p3   | Retail       | Mumbai   |
+|    4 | p4   | Android      | Mumbai   |
++------+------+--------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from employee;
++------+-------+-------+--------+----------+
+| E_Id | Ename | Dept  | Salary | Address  |
++------+-------+-------+--------+----------+
+|    1 | Mohan | HR    |   2500 | Punjab   |
+|    2 | Rohan | MARKT |    600 | Delhi    |
+|    3 | Ravi  | HR    |   3500 | Pune     |
+|    4 | Nitin | MARKT |    350 | Banglore |
+|    5 | varun | IT    |    400 | Delhi    |
+|    6 | Rahul | IT    |    500 | Punjab   |
++------+-------+-------+--------+----------+
+6 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+// Right outer
+mysql> select * from project;
++------+------+--------------+----------+
+| E_Id | P_ID | Project_Name | location |
++------+------+--------------+----------+
+|    1 | p1   | IOT          | Banglore |
+|    5 | p2   | Big Data     | Delhi    |
+|    3 | p3   | Retail       | Mumbai   |
+|    4 | p4   | Android      | Mumbai   |
+|    7 | p5   | ML           | Banglore |
++------+------+--------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> Select Ename,Dept,Project.Location from Employee right outer join  project on ( Employee.E_ID=Project.E_ID);
++-------+-------+----------+
+| Ename | Dept  | Location |
++-------+-------+----------+
+| Mohan | HR    | Banglore |
+| varun | IT    | Delhi    |
+| Ravi  | HR    | Mumbai   |
+| Nitin | MARKT | Mumbai   |
+| NULL  | NULL  | Banglore |
++-------+-------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employee;
++------+-------+-------+--------+----------+
+| E_Id | Ename | Dept  | Salary | Address  |
++------+-------+-------+--------+----------+
+|    1 | Mohan | HR    |   2500 | Punjab   |
+|    2 | Rohan | MARKT |    600 | Delhi    |
+|    3 | Ravi  | HR    |   3500 | Pune     |
+|    4 | Nitin | MARKT |    350 | Banglore |
+|    5 | varun | IT    |    400 | Delhi    |
+|    6 | Rahul | IT    |    500 | Punjab   |
++------+-------+-------+--------+----------+
+6 rows in set (0.00 sec)
+
+
+
+Select * from Employee where Ename like "_o%";
++------+-------+-------+--------+---------+
+| E_Id | Ename | Dept  | Salary | Address |
++------+-------+-------+--------+---------+
+|    1 | Mohan | HR    |   2500 | Punjab  |
+|    2 | Rohan | MARKT |    600 | Delhi   |
++------+-------+-------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> Select * from Employee where Ename like "_oh%";
++------+-------+-------+--------+---------+
+| E_Id | Ename | Dept  | Salary | Address |
++------+-------+-------+--------+---------+
+|    1 | Mohan | HR    |   2500 | Punjab  |
+|    2 | Rohan | MARKT |    600 | Delhi   |
++------+-------+-------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> Select * from Employee where Ename like "r%";
++------+-------+-------+--------+---------+
+| E_Id | Ename | Dept  | Salary | Address |
++------+-------+-------+--------+---------+
+|    2 | Rohan | MARKT |    600 | Delhi   |
+|    3 | Ravi  | HR    |   3500 | Pune    |
+|    6 | Rahul | IT    |    500 | Punjab  |
++------+-------+-------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> Select * from Employee where Ename like "%run";
++------+-------+------+--------+---------+
+| E_Id | Ename | Dept | Salary | Address |
++------+-------+------+--------+---------+
+|    5 | varun | IT   |    400 | Delhi   |
++------+-------+------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> Select * from Employee where Ename like "%";
++------+-------+-------+--------+----------+
+| E_Id | Ename | Dept  | Salary | Address  |
++------+-------+-------+--------+----------+
+|    1 | Mohan | HR    |   2500 | Punjab   |
+|    2 | Rohan | MARKT |    600 | Delhi    |
+|    3 | Ravi  | HR    |   3500 | Pune     |
+|    4 | Nitin | MARKT |    350 | Banglore |
+|    5 | varun | IT    |    400 | Delhi    |
+|    6 | Rahul | IT    |    500 | Punjab   |
++------+-------+-------+--------+----------+
+6 rows in set (0.00 sec)
+
+mysql> Select * from Employee where Ename like "r%";
++------+-------+-------+--------+---------+
+| E_Id | Ename | Dept  | Salary | Address |
++------+-------+-------+--------+---------+
+|    2 | Rohan | MARKT |    600 | Delhi   |
+|    3 | Ravi  | HR    |   3500 | Pune    |
+|    6 | Rahul | IT    |    500 | Punjab  |
++------+-------+-------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> 
+
+mysql> Select * from Employee where Ename like "__a%";
+Empty set (0.00 sec)
+
+mysql> Select * from Employee where Ename like "__h%";
++------+-------+-------+--------+---------+
+| E_Id | Ename | Dept  | Salary | Address |
++------+-------+-------+--------+---------+
+|    1 | Mohan | HR    |   2500 | Punjab  |
+|    2 | Rohan | MARKT |    600 | Delhi   |
+|    6 | Rahul | IT    |    500 | Punjab  |
++------+-------+-------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> 
+
+
+
+
